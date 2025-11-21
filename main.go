@@ -155,7 +155,7 @@ func main() {
 				gasUsageMetric.Set(*telegram.GasUsage)
 			}
 			if telegram.ElectricityPeak != nil {
-				ElectricityPeakMetric.Set(*telegram.ElectricityPeak)
+				electricityPeakMetric.Set(*telegram.ElectricityPeak)
 			}
 
 			logrus.Debugf("%+v\n", telegram)
