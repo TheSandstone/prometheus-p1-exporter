@@ -64,7 +64,7 @@ var (
 		Name: metricNamePrefix + "usage_gas",
 		Help: "Gas usage",
 	})
-	ElectricityPeakMetric = prometheus.NewGauge(prometheus.GaugeOpts{
+	electricityPeakMetric = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: metricNamePrefix + "electricity_peak",
 		Help: "Monthly peak in electricity usage",
 	})
@@ -81,7 +81,7 @@ func init() {
 	registry.MustRegister(powerFailuresLongMetric)
 	registry.MustRegister(powerFailuresShortMetric)
 	registry.MustRegister(gasUsageMetric)
-	registry.MustRegister(ElectricityPeakMetric)
+	registry.MustRegister(electricityPeakMetric)
 }
 
 func main() {

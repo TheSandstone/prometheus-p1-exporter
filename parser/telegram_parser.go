@@ -100,7 +100,7 @@ func ParseTelegram(format *TelegramFormat, telegramLines map[string]string) (Tel
 			ActualElectricityDelivered: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityDelivered], "*kW"),
 			ActualElectricityRetreived: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityRetreived], "*kW"),
 			GasUsage:                   parseGasString(telegramLines[format.KeyGasUsage]),
-			ElectricityPeak:     		parseElectricityString(telegramLines[format.KeyElectricityPeak]),
+			ElectricityPeak:     		parseElectricityStringWithSuffix(telegramLines[format.KeyElectricityPeak], "*kW"),
 		}, nil
 	}
 	return Telegram{}, errors.New("provided telegram is empty")
