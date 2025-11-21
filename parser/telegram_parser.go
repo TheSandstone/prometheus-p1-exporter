@@ -21,6 +21,7 @@ type Telegram struct {
 	ActualElectricityDelivered *float64
 	ActualElectricityRetreived *float64
 	GasUsage                   *float64
+	ElectricityPeak			   *float64
 }
 
 type TelegramFormat struct {
@@ -35,6 +36,7 @@ type TelegramFormat struct {
 	KeyPowerFailuresShort         string
 	KeyPowerFailuresLong          string
 	KeyGasUsage                   string
+	KeyElectricityPeak			  string
 }
 
 func parseTelegramValue(s string) string {
@@ -98,6 +100,7 @@ func ParseTelegram(format *TelegramFormat, telegramLines map[string]string) (Tel
 			ActualElectricityDelivered: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityDelivered], "*kW"),
 			ActualElectricityRetreived: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityRetreived], "*kW"),
 			GasUsage:                   parseGasString(telegramLines[format.KeyGasUsage]),
+			ElectricityPeak:     		parseElectricityString(telegramLines[format.KeyElectricityPeak]),
 		}, nil
 	}
 	return Telegram{}, errors.New("provided telegram is empty")
