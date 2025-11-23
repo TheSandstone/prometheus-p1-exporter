@@ -1,4 +1,4 @@
-module github.com/jordyv/prometheus-p1-exporter
+module github.com/TheSandstone/prometheus-p1-exporter
 
 go 1.17
 

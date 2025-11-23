@@ -1,33 +1,27 @@
 # Prometheus P1 exporter #
 
 Prometheus exporter for smart meter statistics fetched with a P1 cable.
+This is a fork of jordyv's prometheus-p1-exporter because I was in need of the peak power metric and digital water meter (Belgium). Most of the work you find here is created by him.
 
 
 ## Installation ##
 
-### From source ###
+### Docker ###
 
-With Go get:
-
-```
-$ go get github.com/jordyv/prometheus-p1-exporter
-```
-
-With Go install (recommended):
-
-```
-$ go install github.com/jordyv/prometheus-p1-exporter@latest
-
-```
-
-Make:
-
-```
-$ git clone https://github.com/jordyv/prometheus-p1-exporter.git
+$ git clone https://github.com/TheSandstone/prometheus-p1-exporter.git
 $ cd prometheus-p1-exporter
-$ make
-$ sudo make install
+
 ```
+$ sudo docker build -t p1meter .
+```
+
+Use the docker-compose.yml file with the following command to start.
+
+```
+$ sudo docker-compose up -d
+
+```
+
 
 ## Usage ##
 
@@ -79,6 +73,9 @@ p1_usage_electricity_high 1225.59
 # HELP p1_usage_electricity_low Electricity usage low tariff
 # TYPE p1_usage_electricity_low gauge
 p1_usage_electricity_low 1179.186
+# HELP p1_electricity_peak Monthly peak in electricity usage
+# TYPE p1_electricity_peak gauge
+p1_electricity_peak 5.584
 # HELP p1_usage_gas Gas usage
 # TYPE p1_usage_gas gauge
 p1_usage_gas 1019.003

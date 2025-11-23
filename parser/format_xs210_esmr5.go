@@ -12,5 +12,6 @@ var XS210ESMR5TelegramFormat = TelegramFormat{
 	KeyPowerFailuresShort:         "0-0:96.7.21",
 	KeyPowerFailuresLong:          "0-0:96.7.9",
 	KeyGasUsage:                   "0-1:24.2.1",
-	KeyElectricityPeak:			   "1-0:1.6.0",
+	KeyElectricityPeak:            "1-0:1.6.0",
+	KeyWaterUsage:                 "0-2:24.2.1",
 }

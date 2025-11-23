@@ -1,0 +1,13 @@
+services:
+  p1meter:
+    image: p1meter
+    restart: unless-stopped
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
+    networks:
+      - localprom
+    ports:
+      - '8888:8888'
+networks:
+  localprom:
+    driver: bridge

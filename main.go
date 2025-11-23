@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/jordyv/prometheus-p1-exporter/conn"
-	"github.com/jordyv/prometheus-p1-exporter/parser"
+	"github.com/TheSandstone/prometheus-p1-exporter/conn"
+	"github.com/TheSandstone/prometheus-p1-exporter/parser"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -68,6 +68,10 @@ var (
 		Name: metricNamePrefix + "electricity_peak",
 		Help: "Monthly peak in electricity usage",
 	})
+	waterUsageMetric = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "water_usage",
+		Help: "Total amount of used water",
+	})
 )
 
 func init() {
@@ -82,6 +86,7 @@ func init() {
 	registry.MustRegister(powerFailuresShortMetric)
 	registry.MustRegister(gasUsageMetric)
 	registry.MustRegister(electricityPeakMetric)
+	registry.MustRegister(waterUsageMetric)
 }
 
 func main() {
@@ -156,6 +161,9 @@ func main() {
 			}
 			if telegram.ElectricityPeak != nil {
 				electricityPeakMetric.Set(*telegram.ElectricityPeak)
+			}
+			if telegram.WaterUsage != nil {
+				waterUsageMetric.Set(*telegram.WaterUsage)
 			}
 
 			logrus.Debugf("%+v\n", telegram)
