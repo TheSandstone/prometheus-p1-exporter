@@ -64,6 +64,10 @@ var (
 		Name: metricNamePrefix + "usage_gas",
 		Help: "Gas usage",
 	})
+	electricityPeakMetric = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "electricity_peak",
+		Help: "Monthly peak in electricity usage",
+	})
 )
 
 func init() {
@@ -77,6 +81,7 @@ func init() {
 	registry.MustRegister(powerFailuresLongMetric)
 	registry.MustRegister(powerFailuresShortMetric)
 	registry.MustRegister(gasUsageMetric)
+	registry.MustRegister(electricityPeakMetric)
 }
 
 func main() {
@@ -148,6 +153,9 @@ func main() {
 			powerFailuresShortMetric.Set(float64(telegram.PowerFailuresShort))
 			if telegram.GasUsage != nil {
 				gasUsageMetric.Set(*telegram.GasUsage)
+			}
+			if telegram.ElectricityPeak != nil {
+				electricityPeakMetric.Set(*telegram.ElectricityPeak)
 			}
 
 			logrus.Debugf("%+v\n", telegram)
