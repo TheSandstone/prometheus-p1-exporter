@@ -20,9 +20,9 @@ type Telegram struct {
 	PowerFailuresLong          int64
 	ActualElectricityDelivered *float64
 	ActualElectricityRetreived *float64
-	GasUsage                   *float64
 	ElectricityPeak	           *float64
-	WaterUsage                 *float64
+	WaterGasUsage1             *float64
+	WaterGasUsage2             *float64
 }
 
 type TelegramFormat struct {
@@ -36,9 +36,9 @@ type TelegramFormat struct {
 	KeyActualElectricityRetreived string
 	KeyPowerFailuresShort         string
 	KeyPowerFailuresLong          string
-	KeyGasUsage                   string
 	KeyElectricityPeak			  string
-	KeyWaterUsage                 string
+	KeyWaterGasUsage1             string
+	KeyWaterGasUsage2             string
 }
 
 func parseTelegramValue(s string) string {
@@ -76,21 +76,11 @@ func parseElectricityString(s string) *float64 {
 	return parseElectricityStringWithSuffix(s, "*kWh")
 }
 
-func parseGasString(s string) *float64 {
+func parseWaterGasString(s string) *float64 {
 	// 0-1:24.2.1(181009214500S)(01019.003*m3)
 	res, err := strconv.ParseFloat(strings.Replace(parseTelegramValue(s), "*m3", "", 1), 64)
 	if err != nil {
-		logrus.Debugln("Unable to convert gas string to float", err)
-		return nil
-	}
-	return &res
-}
-
-func parseWaterString(s string) *float64 {
-	// 0-2:24.2.1(181009214500S)(01019.003*m3)
-	res, err := strconv.ParseFloat(strings.Replace(parseTelegramValue(s), "*m3", "", 1), 64)
-	if err != nil {
-		logrus.Debugln("Unable to convert water string to float", err)
+		logrus.Debugln("Unable to convert water/gas string to float", err)
 		return nil
 	}
 	return &res
@@ -111,9 +101,9 @@ func ParseTelegram(format *TelegramFormat, telegramLines map[string]string) (Tel
 			PowerFailuresShort:         parseInt(telegramLines[format.KeyPowerFailuresShort]),
 			ActualElectricityDelivered: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityDelivered], "*kW"),
 			ActualElectricityRetreived: parseElectricityStringWithSuffix(telegramLines[format.KeyActualElectricityRetreived], "*kW"),
-			GasUsage:                   parseGasString(telegramLines[format.KeyGasUsage]),
 			ElectricityPeak:            parseElectricityStringWithSuffix(telegramLines[format.KeyElectricityPeak], "*kW"),
-			WaterUsage:                 parseWaterString(telegramLines[format.KeyWaterUsage]),
+			WaterGasUsage1:             parseWaterGasString(telegramLines[format.KeyWaterGasUsage1]),
+			WaterGasUsage2:             parseWaterGasString(telegramLines[format.KeyWaterGasUsage2]),
 		}, nil
 	}
 	return Telegram{}, errors.New("provided telegram is empty")

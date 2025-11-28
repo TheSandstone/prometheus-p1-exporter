@@ -60,17 +60,17 @@ var (
 		Name: metricNamePrefix + "power_failures_short",
 		Help: "Power failures short",
 	})
-	gasUsageMetric = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: metricNamePrefix + "usage_gas",
-		Help: "Gas usage",
-	})
 	electricityPeakMetric = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: metricNamePrefix + "electricity_peak",
 		Help: "Monthly peak in electricity usage",
 	})
-	waterUsageMetric = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: metricNamePrefix + "water_usage",
-		Help: "Total amount of used water",
+	watergasUsageMetric1 = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "usage_gas_or_water_1",
+		Help: "Total amount of used water/gas",
+	})
+	watergasUsageMetric2 = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "usage_gas_or_water_2",
+		Help: "Total amount of used water/gas",
 	})
 )
 
@@ -84,9 +84,9 @@ func init() {
 	registry.MustRegister(activeTarrifMetric)
 	registry.MustRegister(powerFailuresLongMetric)
 	registry.MustRegister(powerFailuresShortMetric)
-	registry.MustRegister(gasUsageMetric)
 	registry.MustRegister(electricityPeakMetric)
-	registry.MustRegister(waterUsageMetric)
+	registry.MustRegister(watergasUsageMetric1)
+	registry.MustRegister(watergasUsageMetric2)
 }
 
 func main() {
@@ -156,14 +156,14 @@ func main() {
 			activeTarrifMetric.Set(float64(telegram.ActiveTariff))
 			powerFailuresLongMetric.Set(float64(telegram.PowerFailuresLong))
 			powerFailuresShortMetric.Set(float64(telegram.PowerFailuresShort))
-			if telegram.GasUsage != nil {
-				gasUsageMetric.Set(*telegram.GasUsage)
-			}
 			if telegram.ElectricityPeak != nil {
 				electricityPeakMetric.Set(*telegram.ElectricityPeak)
 			}
-			if telegram.WaterUsage != nil {
-				waterUsageMetric.Set(*telegram.WaterUsage)
+			if telegram.WaterGasUsage1 != nil {
+				watergasUsageMetric1.Set(*telegram.WaterGasUsage1)
+			}
+			if telegram.WaterGasUsage2 != nil {
+				watergasUsageMetric2.Set(*telegram.WaterGasUsage2)
 			}
 
 			logrus.Debugf("%+v\n", telegram)

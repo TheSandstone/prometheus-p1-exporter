@@ -76,10 +76,17 @@ p1_usage_electricity_low 1179.186
 # HELP p1_electricity_peak Monthly peak in electricity usage
 # TYPE p1_electricity_peak gauge
 p1_electricity_peak 5.584
-# HELP p1_usage_gas Gas usage
-# TYPE p1_usage_gas gauge
-p1_usage_gas 1019.003
+# HELP p1_watergasUsageMetric1 Total amount of used water/gas
+# TYPE p1_watergasUsageMetric1 gauge
+p1_watergasUsageMetric1 1019.003
+# HELP p1_watergasUsageMetric2 Total amount of used water/gas
+# TYPE p1_watergasUsageMetric2 gauge
+p1_watergasUsageMetric2 2019.003
 ```
+
+## Remarks ##
+Gas and water meter use the same code, it depends on which one is placed first.
+
 
 ## Development ##
 
