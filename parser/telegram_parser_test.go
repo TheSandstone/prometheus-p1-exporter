@@ -42,8 +42,8 @@ func TestParseESMR5Format(t *testing.T) {
 	if telegram.ActiveTariff != 2 {
 		t.Error(telegram.ActiveTariff)
 	}
-	if *telegram.GasUsage != 1019.003 {
-		t.Error(telegram.GasUsage)
+	if *telegram.WaterGasUsage1 != 1019.003 {
+		t.Error(telegram.WaterGasUsage1)
 	}
 	if telegram.Timestamp != 181009214805 {
 		t.Error(telegram.Timestamp)

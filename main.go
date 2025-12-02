@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/jordyv/prometheus-p1-exporter/conn"
-	"github.com/jordyv/prometheus-p1-exporter/parser"
+	"github.com/TheSandstone/prometheus-p1-exporter/conn"
+	"github.com/TheSandstone/prometheus-p1-exporter/parser"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -60,13 +60,17 @@ var (
 		Name: metricNamePrefix + "power_failures_short",
 		Help: "Power failures short",
 	})
-	gasUsageMetric = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: metricNamePrefix + "usage_gas",
-		Help: "Gas usage",
-	})
 	electricityPeakMetric = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: metricNamePrefix + "electricity_peak",
 		Help: "Monthly peak in electricity usage",
+	})
+	watergasUsageMetric1 = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "usage_gas_or_water_1",
+		Help: "Total amount of used water/gas",
+	})
+	watergasUsageMetric2 = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: metricNamePrefix + "usage_gas_or_water_2",
+		Help: "Total amount of used water/gas",
 	})
 )
 
@@ -80,8 +84,9 @@ func init() {
 	registry.MustRegister(activeTarrifMetric)
 	registry.MustRegister(powerFailuresLongMetric)
 	registry.MustRegister(powerFailuresShortMetric)
-	registry.MustRegister(gasUsageMetric)
 	registry.MustRegister(electricityPeakMetric)
+	registry.MustRegister(watergasUsageMetric1)
+	registry.MustRegister(watergasUsageMetric2)
 }
 
 func main() {
@@ -151,11 +156,14 @@ func main() {
 			activeTarrifMetric.Set(float64(telegram.ActiveTariff))
 			powerFailuresLongMetric.Set(float64(telegram.PowerFailuresLong))
 			powerFailuresShortMetric.Set(float64(telegram.PowerFailuresShort))
-			if telegram.GasUsage != nil {
-				gasUsageMetric.Set(*telegram.GasUsage)
-			}
 			if telegram.ElectricityPeak != nil {
 				electricityPeakMetric.Set(*telegram.ElectricityPeak)
+			}
+			if telegram.WaterGasUsage1 != nil {
+				watergasUsageMetric1.Set(*telegram.WaterGasUsage1)
+			}
+			if telegram.WaterGasUsage2 != nil {
+				watergasUsageMetric2.Set(*telegram.WaterGasUsage2)
 			}
 
 			logrus.Debugf("%+v\n", telegram)
